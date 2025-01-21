@@ -1,0 +1,28 @@
+{
+  "name": "rag-chatbot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.33.1",
+    "@langchain/anthropic": "^0.3.12",
+    "@langchain/core": "^0.3.32",
+    "@langchain/openai": "^0.3.17",
+    "body-parser": "^1.20.3",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "fs": "^0.0.1-security",
+    "langchain": "^0.3.12",
+    "openai": "^4.79.1",
+    "path": "^0.12.7",
+    "url": "^0.11.4",
+    "vectra": "^0.9.0",
+    "winston": "^3.17.0"
+  }
+}

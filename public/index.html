@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Chatbot</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="chat-container">
+        <div class="model-selector">
+            <label for="platform-select">Choose Model:</label>
+            <select id="platform-select">
+                <option value="claude">Claude</option>
+                <option value="openai">Open AI</option>
+            </select>
+            <select class="model-select" id="claude-model-select">
+                <option value="claude-3-5-sonnet-20241022">Claude-3.5 Sonnet</option>
+                <option value="claude-3-sonnet-20240229">Claude-3 Sonnet</option>
+                <option value="claude-3-5-haiku-20241022">Claude-3.5 Haiku</option>
+                <option value="claude-3-haiku-20240307">Claude-3 Haiku</option>
+            </select>
+            <select class="model-select" id="openai-model-select" style="display:none">
+                <option value="gpt-4o">GPT 4o</option>
+                <option value="gpt-4o-mini">GPT 4o Mini</option>
+                <option value="gpt-3.5-turbo">GPT 3.5 Turbo</option>
+            </select>
+        </div>
+        <div class="chat-box" id="chat-box"></div>
+        <div class="input-container">
+            <input type="text" id="user-input" placeholder="Type a message..." />
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
