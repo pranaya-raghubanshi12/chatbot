@@ -7,5 +7,3 @@
 node server.js
 ```
 Run this command to start server.
-
-*Note: npm packages are not included in repo, please install it first*
