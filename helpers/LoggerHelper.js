@@ -28,7 +28,6 @@ const logger = createLogger({
 const clearOldLogs = () => {
     fs.readFile(LOG_FILE_PATH, 'utf8', (err, data) => {
         if (err) {
-            console.error('Error reading log file:', err);
             return;
         }
 
