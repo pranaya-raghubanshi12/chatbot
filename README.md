@@ -14,5 +14,7 @@ Run this command to start server.
 - Claude
 - Open AI
 
+# Note: Context documents should be added in the *directory* folder of root directory
 
+*Note: Sample data are provided in context of Langchain in directory folder by default*
 *Note: Errors will be logged in debug.log file at root directory*
