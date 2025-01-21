@@ -14,6 +14,9 @@ Run this command to start server.
 - Claude
 - Open AI
 
+# DB Used:
+- In memory DB (MemoryVectorStore; langchain/vectorstores/memory)
+
 # Note: Context documents should be added in the *directory* folder of root directory
 
 *Note: Sample data are provided in context of "Langchain" topic in directory folder by default*
