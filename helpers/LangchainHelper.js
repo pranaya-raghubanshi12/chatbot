@@ -1,5 +1,4 @@
 import { PromptTemplate } from "@langchain/core/prompts";
-import { RetrievalQAChain } from "langchain/chains";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import LangchainMemoryVectorStoreHelper from "./LangchainMemoryVectorStoreHelper.js";
 import DocumentHelper from "./DocumentHelper.js";
@@ -15,17 +14,14 @@ export default {
         return await textSplitter.splitDocuments(documents);
     },
 
-    createRagChainResponseFromVectorMemory: async (docsPath, userMessage, model) => {
+    createRagChainResponseFromVectorMemory: async (docsPath, question, llm) => {
         try {
             const splitDocs = await getSplittedDocuments(docsPath);
             const vectorStore = await LangchainMemoryVectorStoreHelper.generateVectorStore(splitDocs);
-            const chain = generateRetrievalChainFromAiModel(
-                model,
-                vectorStore
-            );
-            const response = await chain.call({
-                query: userMessage
-            });
+            const retrievedDocs = await vectorStore.similaritySearch(question, 3);
+            const context = retrievedDocs.map(doc => doc.pageContent).join("\n\n");
+            const messages = await generateMessagesFromPrompt(context, question);
+            const response = await llm.call(messages);
             return response;
         } catch (error) {
             throw new InternalServerError(
@@ -34,33 +30,23 @@ export default {
             );
         }
     },
-
-
 }
 
-function getPromptTemplate() {
-    const template = `Use the following pieces of context to answer the question at the end. 
-        If you don't know the answer, just say that you don't know, don't try to make up an answer.
-        
-        Context: {context}
-        
-        Question: {question}
-        
-        Answer: Let me help you with that.`;
-
-        return PromptTemplate.fromTemplate(template);
-    }
-
-function generateRetrievalChainFromAiModel(model, vectorStore) {
-    return RetrievalQAChain.fromLLM(
-        model,
-        vectorStore.asRetriever(),
-        {
-            prompt: getPromptTemplate(),
-            returnSourceDocuments: true,
-            verbose: true
-        }
-    );
+async function generateMessagesFromPrompt(context, question) {
+    const prompt = new PromptTemplate({
+        inputVariables: ["context", "question"],
+        template: `
+          You are a helpful assistant. If you don't know the answer, just say that you don't know, don't try to make up an answer. Use the following context to answer the question:
+          Context: {context}
+          Question: {question}
+          Answer:
+        `,
+    });
+    const formattedPrompt = await prompt.format({ context, question });
+    return [
+        { role: 'system', content: 'You are a helpful assistant.' },
+        { role: 'user', content: formattedPrompt },
+    ];
 }
 
 async function splitDocuments(documents) {
